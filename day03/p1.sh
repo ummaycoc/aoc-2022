@@ -13,4 +13,4 @@ function calc {
 {
    <<< "$priorities" calc '[a-z]' 96
    <<< "$priorities" calc '[A-Z]' 38
-} | sort -n | uniq -c | sed -e 's/^[[:space:]]*//' -e 's/ /*/' | bc | paste -s -d+ - | bc
+} | sort -n | uniq -c | sed -e 's/^[[:space:]]*//' -e 's/ /*/' | paste -s -d+ - | bc
