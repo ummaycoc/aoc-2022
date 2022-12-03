@@ -4,7 +4,7 @@ priorities=$(
     half=$(( length / 2 ))
     L=${REPLY:0:half}
     R=${REPLY:half:length}
-    comm -1 -2 <( <<< $L grep -o . | sort ) <( <<< $R grep -o . | sort ) | sort | uniq
+    comm -1 -2 <( <<< $L grep -o . | sort ) <( <<< $R grep -o . | sort ) | uniq
   done < input # | tr -d $'\n'
 )
 function calc {
