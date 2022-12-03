@@ -5,7 +5,7 @@ priorities=$(
     L=${REPLY:0:half}
     R=${REPLY:half:length}
     comm -1 -2 <( <<< $L grep -o . | sort ) <( <<< $R grep -o . | sort ) | uniq
-  done < input # | tr -d $'\n'
+  done < input
 )
 function calc {
   egrep -o "$1" | tr -d $'\n' | od -An -t uC | xargs | tr ' ' $'\n' | sed -e "s/$/-$2/" | bc
