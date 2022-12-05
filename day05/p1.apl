@@ -1,3 +1,6 @@
+fname ← '/path/to/file'
+read ← 'UTF-8' ⎕NGET fname
+input ← ¯1↓⊃read[1]
 lines ← {⍵⊆⍨~⍵=⎕UCS 10}input
 stacks ← ↑lines[⍸'['(∊⍤1 1)↑lines]
 nstacks ← ⌈/⍎lines⊃⍨1+≢stacks
