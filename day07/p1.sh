@@ -47,10 +47,15 @@ function combine {
 }
 
 function process {
-  sort | tail -r | combine | process_rec | process_rec2
+  sort | tail -r | combine | process_rec
 }
 
 function process_rec {
+  LINES="$( process_top )"
+  [ "$( <<< "$LINES" wc -l | xargs )" -gt 1 ] && <<< "$LINES" process
+}
+
+function process_top {
   PREFIX=
   while read ; do
     CPREFIX="$( <<< "$REPLY" cut -d' ' -f1 )"
@@ -62,11 +67,6 @@ function process_rec {
     push "$REPLY"
   done
   cat
-}
-
-function process_rec2 {
-  LINES="$( < /dev/stdin )"
-  [ "$( <<< "$LINES" wc -l | xargs )" -gt 1 ] && <<< "$LINES" process
 }
 
 PIPE="./p1.fifo"
