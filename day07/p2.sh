@@ -69,7 +69,7 @@ function process_top {
   cat
 }
 
-PIPE="./p1.fifo"
+PIPE="./p2.fifo"
 
 function push {
   ENTRY=( $1 )
