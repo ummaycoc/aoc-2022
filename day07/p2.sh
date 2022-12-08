@@ -47,10 +47,15 @@ function combine {
 }
 
 function process {
-  sort | tail -r | combine | process_rec | process_rec2
+  sort | tail -r | combine | process_rec
 }
 
 function process_rec {
+  LINES="$( process_top )"
+  [ "$( <<< "$LINES" wc -l | xargs )" -gt 1 ] && <<< "$LINES" process
+}
+
+function process_top {
   PREFIX=
   while read ; do
     CPREFIX="$( <<< "$REPLY" cut -d' ' -f1 )"
@@ -64,11 +69,6 @@ function process_rec {
   cat
 }
 
-function process_rec2 {
-  LINES="$( < /dev/stdin )"
-  [ "$( <<< "$LINES" wc -l | xargs )" -gt 1 ] && <<< "$LINES" process
-}
-
 PIPE="./p1.fifo"
 
 function push {
@@ -80,8 +80,7 @@ function push {
 }
 
 function filter {
-  LINES="$( cut -d' ' -f2 ; exec 3>&- )"
-  exec 3>&-
+  LINES="$( cut -d' ' -f2 )"
   MAX="$( <<< "$LINES" sort -n | tail -n 1 )"
   FREE="$(( 70000000 - MAX ))"
   NEED="$(( 30000000 - FREE ))"
@@ -97,4 +96,3 @@ mkfifo "$PIPE"
 3> "$PIPE" exec
 
 readinput | process
-exec 3>&- # tried closing everywhere, still hangs after printing.
