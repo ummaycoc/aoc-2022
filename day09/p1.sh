@@ -27,16 +27,8 @@
     DX=$(( HX - TX ))
     DY=$(( HY - TY ))
     [ ${DX#-} -le 1 -a ${DY#-} -le 1 ] && continue
-    if [ ${DX#-} -eq 2 ] ; then
-      TX=$(( TX + ( DX / 2 ) ))
-      TY=$(( TY + DY ))
-    elif [ ${DY#-} -eq 2 ] ; then
-      TY=$(( TY + ( DY / 2 ) ))
-      TX=$(( TX + DX ))
-    else
-      >&2 echo "Invalid deltas: $DX / $DY"
-      exit 1
-    fi
+    [ $DX -ne 0 ] && TX=$(( TX + ( DX / ${DX#-} ) ))
+    [ $DY -ne 0 ] && TY=$(( TY + ( DY / ${DY#-} ) ))
     echo "$TX,$TY"
   done
 } | sort -u | wc -l
