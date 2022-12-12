@@ -42,9 +42,7 @@ function location {
 
 while read ; do
   MOVE=( $REPLY )
-  for i in $( seq 1 ${MOVE[1]} ) ; do
-    echo "${MOVE[0]}"
-  done
+  printf "${MOVE[0]}%.0s\n" $( seq 1 "${MOVE[1]}" )
 done < input |
   while read ; do
     [ "$REPLY" = R ] && echo  1  0
