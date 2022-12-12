@@ -16,10 +16,8 @@ function move {
     DY=$(( HY - TY ))
     [ ${DX#-} -le 1 -a ${DY#-} -le 1 ] && continue
     [ ${DX#-} -le 1 -a ${DY#-} -le 1 ] && continue
-    [ $DX -lt 0 ] && DX=-1
-    [ $DX -gt 0 ] && DX=1
-    [ $DY -lt 0 ] && DY=-1
-    [ $DY -gt 0 ] && DY=1
+    [ $DX -ne 0 ] && DX=$(( DX / ${DX#-} ))
+    [ $DY -ne 0 ] && DY=$(( DY / ${DY#-} ))
     TX=$(( TX + DX ))
     TY=$(( TY + DY ))
     echo "$DX $DY"
