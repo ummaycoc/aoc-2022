@@ -7,8 +7,7 @@
   while read ; do
     MOVE=( $REPLY )
     printf "${MOVE[0]}%.0s\n" $( seq 1 "${MOVE[1]}" )
-  done < input |
-  while read ; do
+  done < input | while read ; do
     [ "$REPLY" = R ] && HX=$(( ++HX ))
     [ "$REPLY" = L ] && HX=$(( --HX ))
     [ "$REPLY" = U ] && HY=$(( ++HY ))
