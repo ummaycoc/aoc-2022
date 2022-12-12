@@ -15,24 +15,14 @@ function move {
     DX=$(( HX - TX ))
     DY=$(( HY - TY ))
     [ ${DX#-} -le 1 -a ${DY#-} -le 1 ] && continue
-    if [ $DY -gt 0 ] ; then
-      [ $DX -lt 0 ] && MOVE="-1  1"
-      [ $DX -eq 0 ] && MOVE=" 0  1"
-      [ $DX -gt 0 ] && MOVE=" 1  1"
-    elif [ $DY -eq 0 ] ; then
-      [ $DX -lt 0 ] && MOVE="-1  0"
-      [ $DX -gt 0 ] && MOVE=" 1  0"
-    else
-      [ $DX -lt 0 ] && MOVE="-1 -1"
-      [ $DX -eq 0 ] && MOVE=" 0 -1"
-      [ $DX -gt 0 ] && MOVE=" 1 -1"
-    fi
-    DELTA=( $MOVE )
-    DX=${DELTA[0]}
-    DY=${DELTA[1]}
+    [ ${DX#-} -le 1 -a ${DY#-} -le 1 ] && continue
+    [ $DX -lt 0 ] && DX=-1
+    [ $DX -gt 0 ] && DX=1
+    [ $DY -lt 0 ] && DY=-1
+    [ $DY -gt 0 ] && DY=1
     TX=$(( TX + DX ))
     TY=$(( TY + DY ))
-    echo "$MOVE"
+    echo "$DX $DY"
   done
 }
 
