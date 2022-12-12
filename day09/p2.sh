@@ -15,7 +15,6 @@ function move {
     DX=$(( HX - TX ))
     DY=$(( HY - TY ))
     [ ${DX#-} -le 1 -a ${DY#-} -le 1 ] && continue
-    [ ${DX#-} -le 1 -a ${DY#-} -le 1 ] && continue
     [ $DX -ne 0 ] && DX=$(( DX / ${DX#-} ))
     [ $DY -ne 0 ] && DY=$(( DY / ${DY#-} ))
     TX=$(( TX + DX ))
