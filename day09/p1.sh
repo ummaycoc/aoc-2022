@@ -9,21 +9,12 @@
     for i in $( seq 1 ${MOVE[1]} ) ; do
       echo ${MOVE[0]}
     done
-  done < input | while read ; do
-    case $REPLY in
-    R)
-      HX=$(( HX + 1 ))
-      ;;
-    L)
-      HX=$(( HX - 1 ))
-      ;;
-    U)
-      HY=$(( HY + 1 ))
-      ;;
-    D)
-      HY=$(( HY - 1 ))
-      ;;
-    esac
+  done < input |
+  while read ; do
+    [ "$REPLY" = R ] && HX=$(( ++HX ))
+    [ "$REPLY" = L ] && HX=$(( --HX ))
+    [ "$REPLY" = U ] && HY=$(( ++HY ))
+    [ "$REPLY" = D ] && HY=$(( --HY ))
     DX=$(( HX - TX ))
     DY=$(( HY - TY ))
     [ ${DX#-} -le 1 -a ${DY#-} -le 1 ] && continue
