@@ -2,16 +2,16 @@
 function parseArrow {
   local DX
   local DY
-  if <<< "$1" grep -q '[↗→↘]' ; then
+  if [[ "$1" =~ [↗→↘] ]] ; then
     DX=1
-  elif <<< "$1" grep -q '[↖←↙]' ; then
+  elif [[ "$1" =~ [↖←↙] ]] ; then
     DX=-1
   else
     DX=0
   fi
-  if <<< "$1" grep -q '[↖↑↗]' ; then
+  if [[ "$1" =~ [↖↑↗] ]] ; then
     DY=1
-  elif <<< "$1" grep -q '[↙↓↘]' ; then
+  elif [[ "$1" =~ [↙↓↘] ]] ; then
     DY=-1
   else
     DY=0
