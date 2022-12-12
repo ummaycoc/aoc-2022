@@ -1,24 +1,3 @@
-
-function parseArrow {
-  local DX
-  local DY
-  if [[ "$1" =~ [↗→↘] ]] ; then
-    DX=1
-  elif [[ "$1" =~ [↖←↙] ]] ; then
-    DX=-1
-  else
-    DX=0
-  fi
-  if [[ "$1" =~ [↖↑↗] ]] ; then
-    DY=1
-  elif [[ "$1" =~ [↙↓↘] ]] ; then
-    DY=-1
-  else
-    DY=0
-  fi
-  echo "$DX $DY"
-}
-
 function move {
   local HX=0
   local HY=0
@@ -28,7 +7,7 @@ function move {
   local DX
   local DY
   while read ; do
-    DELTA=( $( parseArrow "$REPLY" ) )
+    DELTA=( $REPLY )
     DX=${DELTA[0]}
     DY=${DELTA[1]}
     HX=$(( HX + DX ))
@@ -36,21 +15,19 @@ function move {
     DX=$(( HX - TX ))
     DY=$(( HY - TY ))
     [ ${DX#-} -le 1 -a ${DY#-} -le 1 ] && continue
-    MOVE=$(
-      if [ $DY -gt 0 ] ; then
-        [ $DX -lt 0 ] && echo ↖
-        [ $DX -eq 0 ] && echo ↑
-        [ $DX -gt 0 ] && echo ↗
-      elif [ $DY -eq 0 ] ; then
-        [ $DX -lt 0 ] && echo ←
-        [ $DX -gt 0 ] && echo →
-      else
-        [ $DX -lt 0 ] && echo ↙
-        [ $DX -eq 0 ] && echo ↓
-        [ $DX -gt 0 ] && echo ↘
-      fi
-    )
-    DELTA=( $( parseArrow "$MOVE" ) )
+    if [ $DY -gt 0 ] ; then
+      [ $DX -lt 0 ] && MOVE="-1  1"
+      [ $DX -eq 0 ] && MOVE=" 0  1"
+      [ $DX -gt 0 ] && MOVE=" 1  1"
+    elif [ $DY -eq 0 ] ; then
+      [ $DX -lt 0 ] && MOVE="-1  0"
+      [ $DX -gt 0 ] && MOVE=" 1  0"
+    else
+      [ $DX -lt 0 ] && MOVE="-1 -1"
+      [ $DX -eq 0 ] && MOVE=" 0 -1"
+      [ $DX -gt 0 ] && MOVE=" 1 -1"
+    fi
+    DELTA=( $MOVE )
     DX=${DELTA[0]}
     DY=${DELTA[1]}
     TX=$(( TX + DX ))
@@ -67,7 +44,7 @@ function location {
   local DY
   echo 0,0
   while read ; do
-    DELTA=( $( parseArrow "$REPLY" ) )
+    DELTA=( $REPLY )
     DX="${DELTA[0]}"
     DY="${DELTA[1]}"
     X=$(( X + DX ))
@@ -76,12 +53,17 @@ function location {
   done
 }
 
-< input tr RLUD →←↑↓ |
+while read ; do
+  MOVE=( $REPLY )
+  for i in $( seq 1 ${MOVE[1]} ) ; do
+    echo "${MOVE[0]}"
+  done
+done < input |
   while read ; do
-    MOVE=( $REPLY )
-    for i in $( seq 1 ${MOVE[1]} ) ; do
-      echo "${MOVE[0]}"
-    done
+    [ "$REPLY" = R ] && echo  1  0
+    [ "$REPLY" = L ] && echo -1  0
+    [ "$REPLY" = U ] && echo  0  1
+    [ "$REPLY" = D ] && echo  0 -1
   done |
   move head follwed by 1 |
   move 1 followed by 2 |
